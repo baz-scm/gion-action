@@ -1,0 +1,4 @@
+# Named projects for `gion clone --project`. test.yml checks out "scripts"
+# with the checkout action's `projects` input.
+[projects]
+scripts = ["scripts"]

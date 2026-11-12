@@ -20,19 +20,34 @@ Every action installs gion itself, so you don't need the setup action before the
       libs/common
 ```
 
-You get those paths plus the files in their parent directories (root config, lockfiles), at `$GITHUB_SHA`. Leave `paths` empty to get the whole tree. The workspace has a small `.git` snapshot, so `git status`, `git diff` and pre-commit work. There is no history: tools that need tags or `git log` (GoReleaser, changelog generators, `git describe`) still need `actions/checkout`.
+You get those paths plus the files in their parent directories (root config, lockfiles), at `$GITHUB_SHA`. Leave `paths` and `projects` empty to get the whole tree. The workspace has a small `.git` snapshot, so `git status`, `git diff` and pre-commit work. There is no history: tools that need tags or `git log` (GoReleaser, changelog generators, `git describe`) still need `actions/checkout`.
 
 | Input | Default | |
 | --- | --- | --- |
 | `repository` | this repo | `owner/repo` or a git URL |
 | `ref` | `github.sha` for this repo, else the remote's HEAD | branch, tag or commit |
 | `paths` | everything | one per line |
+| `projects` | none | names from `.gion/projects.toml`, one per line; combines with `paths` |
 | `path` | `.` | directory to put the workspace in |
 | `git` | `true` | `false` skips the `.git` snapshot |
 | `token` | `github.token` | see [Tokens](#tokens) |
 | `version` | pinned, see [Versioning](#versioning) | gion release, e.g. `v0.3.1`, or `latest` |
 
 Outputs: `path`, `gion-version`.
+
+If the repo names projects in `.gion/projects.toml`, check one out by name. You get its paths plus their local dependencies:
+
+```yaml
+- uses: baz-scm/gion-action/checkout@v1
+  with:
+    projects: web
+```
+
+```toml
+# .gion/projects.toml
+[projects]
+web = ["apps/web", "packages/ui"]
+```
 
 ## Run jobs only when something changed
 

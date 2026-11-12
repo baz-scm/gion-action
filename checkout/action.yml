@@ -19,6 +19,11 @@ inputs:
       Paths to check out, one per line. Files in their parent directories
       (root config, lockfiles) come along. Empty checks out everything.
     default: ""
+  projects:
+    description: >
+      Projects from the repo's .gion/projects.toml to check out, one per
+      line. Their local dependencies come along. Combines with paths.
+    default: ""
   path:
     description: Directory to put the workspace in, relative to $GITHUB_WORKSPACE.
     default: .
@@ -64,6 +69,7 @@ runs:
         REPOSITORY: ${{ inputs.repository }}
         REF: ${{ inputs.ref || (inputs.repository == github.repository && github.sha || '') }}
         PATHS: ${{ inputs.paths }}
+        PROJECTS: ${{ inputs.projects }}
         DIR: ${{ inputs.path }}
         GIT: ${{ inputs.git }}
       run: '"$GITHUB_ACTION_PATH/../scripts/checkout.sh"'

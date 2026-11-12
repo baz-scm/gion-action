@@ -85,6 +85,18 @@ jobs:
           path: self
       - run: test -f self/action.yml && test -f self/checkout/action.yml
 
+      - name: checkout (this repo, a project from .gion/projects.toml)
+        uses: ./checkout
+        with:
+          projects: scripts
+          path: project
+      - name: only the project's paths and root files
+        run: |
+          test -f project/scripts/checkout.sh
+          test -f project/action.yml
+          test ! -e project/changed/action.yml
+          test ! -e project/checkout/action.yml
+
       - name: changed (explicit commits and paths)
         id: explicit
         uses: ./changed
