@@ -33,7 +33,7 @@ inputs:
       gion release to install, e.g. v0.3.1, or "latest". Defaults to the
       release this version of the action was tested with, which skips a
       lookup. It is bumped after each gion release.
-    default: v0.5.0
+    default: v0.6.0
 
 outputs:
   path:
